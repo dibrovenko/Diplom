@@ -21,7 +21,7 @@ def quaternion_between_vectors(v1: np.ndarray, v2: np.ndarray):
 
 
 class Control:
-    W_rel_isk_last = W_rel_isk_now = 0
+    W_ref_isk_last = W_ref_isk_now = 0
     t_last = t_now = 0
     counter = 0
     U = np.array([0, 0, 0])
@@ -61,7 +61,6 @@ class Control:
         if not self.check_every_fourth_call():
             return self.U
 
-        self.t_now = t
         r = y[0:3]
         v = y[3:6]
         W_abs_cck = y[6:9]
@@ -79,13 +78,15 @@ class Control:
         # Кватернион A (из ОСК в ССК) и Wrel в ssk:
         A = B.conjugate * Q
         W_rel_cck = W_abs_cck - A.conjugate.rotate(W_ref_ock)
-        print(W_rel_cck)
+
 
         # считаем численно производную требуемой углвой скорости в сск
-        self.W_rel_isk_now = np.cross(r, v) / (np.linalg.norm(r) ** 2)
-        dotW_ref_ick = (self.W_rel_isk_now - self.W_rel_isk_last) / (self.t_now - self.t_last)
+        self.W_ref_isk_now = np.cross(r, v) / (np.linalg.norm(r) ** 2)
+        self.t_now = t
+        dotW_ref_ick = (self.W_ref_isk_now - self.W_ref_isk_last) / (self.t_now - self.t_last)
         dotW_ref_cck = Q.conjugate.rotate(dotW_ref_ick)
         self.t_last = t
+        self.W_ref_isk_last = self.W_ref_isk_now
 
         q = A.vector
 

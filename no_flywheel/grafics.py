@@ -102,7 +102,29 @@ def start_plot(orbit: Orbit, rotation: Rotation, first_integrals: First_integral
     plot_subplot(326, orbit.result_t, orbit.result_nu, 'Истинная аномалия', 't, c', ' ν')
     save_and_close_plot(fig_elements, 'result/result_elements.png')
 
+    # Графики угловой скорости ССК относительно ОСК
+    fig_W_rel = plt.figure(figsize=(10.5, 7))
+    plot_subplot(221, rotation.result_t, rotation.result_W_rel[:, 0],
+                 'Проекция угловой скорости ССК относительно ОСК на Оx', 't, c', 'x')
+    plot_subplot(222, rotation.result_t, rotation.result_W_rel[:, 1],
+                 'Проекция угловой скорости ССК относительно ОСК на Оy', 't, c', 'y')
+    plot_subplot(223, rotation.result_t, rotation.result_W_rel[:, 2],
+                 'Проекция угловой скорости ССК относительно ОСК на Оz', 't, c', 'z')
+    save_and_close_plot(fig_W_rel, 'result/result_W_rel.png')
+
+    # Графики Кватерниона A (из ОСК в ССК)
+    fig_A = plt.figure(figsize=(10.5, 7))
+    plot_subplot(221, rotation.result_t, rotation.result_A[:, 0],
+                 'Скалярная часть кватерниона A(из ОСК в ССК)', 't, c', 'a')
+    plot_subplot(222, rotation.result_t, rotation.result_A[:, 1],
+                 'Векторная компонента i кватерниона A(из ОСК в ССК)', 't, c', 'i')
+    plot_subplot(223, rotation.result_t, rotation.result_A[:, 2],
+                 'Векторная компонента j кватерниона A(из ОСК в ССК)', 't, c', 'j')
+    plot_subplot(224, rotation.result_t, rotation.result_A[:, 3],
+                 'Векторная компонента k кватерниона A(из ОСК в ССК)', 't, c', 'k')
+    save_and_close_plot(fig_A, 'result/result_A.png')
+
     # Cтроим орбиту
-    orbit_plot(orbit=orbit)
+    #orbit_plot(orbit=orbit)
 
 

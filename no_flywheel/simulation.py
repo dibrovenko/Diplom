@@ -95,7 +95,7 @@ class Simulation:
 
         # добавляем результаты по своим классам
         self.orbit.add_results(t=t, y=y[:, 0:6])
-        self.rotation.add_results(t=t, y=y[:, 6:13])
+        self.rotation.add_results(t=t, y=y)
 
         # Считаем первые интегралы
         self.first_integrals.calculate(t=t, y=y)
